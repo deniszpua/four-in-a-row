@@ -26,7 +26,8 @@ public class TestCoordinates {
 
 	@Test
 	public void testHashCode() {
-		fail("Not yet implemented");
+		//should return true if equals return true;
+		assertEquals(point2_2.hashCode(), point2_2_duplicate.hashCode());
 	}
 
 	@Test
@@ -46,7 +47,9 @@ public class TestCoordinates {
 
 	@Test
 	public void testCompareTo() {
-		fail("Not yet implemented");
+		assertTrue(origin.compareTo(point15_15) < 0);
+		assertTrue(point15_2.compareTo(point2_15) > 0);
+		assertTrue(point2_2.compareTo(point2_2_duplicate) == 0);
 	}
 
 }
