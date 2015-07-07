@@ -11,8 +11,8 @@ public class BoardView extends Layer {
 	public static final float MARGIN = 5;
 	
 	private final FourInARow game;
-	private float cellSize;
 
+	public float cellSize;
 	
 	public BoardView(FourInARow game, IDimension viewSize) {
 		this.game = game;
@@ -21,6 +21,15 @@ public class BoardView extends Layer {
 				(viewSize.width() - 2 * MARGIN)/game.BOARD_WIDTH);
 	}
 	
+	/**
+	 * Returns offset of the center of the cell
+	 * @param cellCount - row or column of the cell
+	 * @return offset in pixels in x or y
+	 */
+	public float cellOffset(int cellCount) {
+		//cell offset from center is 
+		return cellCount*cellSize + cellSize/2 + 1;
+	}
 	
 	@Override
 	public float width() {

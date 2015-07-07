@@ -10,7 +10,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
 	@Override
 	public int hashCode() {
-		return x^y;
+		return getX()^getY();
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class Coordinates implements Comparable<Coordinates> {
 		}
 		else {
 			Coordinates otherCoord = (Coordinates) other;
-			return (this.x == otherCoord.x) && (this.y == otherCoord.y);
+			return (this.getX() == otherCoord.getX()) && (this.getY() == otherCoord.getY());
 		}
 	}
 	
@@ -37,10 +37,18 @@ public class Coordinates implements Comparable<Coordinates> {
 	 */
 	@Override
 	public int compareTo(Coordinates o) {
-		return Integer.valueOf(this.x).compareTo(o.x) != 0 
-				? Integer.valueOf(this.x).compareTo(o.x)
-						: Integer.valueOf(this.y).compareTo(o.y);
+		return Integer.valueOf(this.getX()).compareTo(o.getX()) != 0 
+				? Integer.valueOf(this.getX()).compareTo(o.getX())
+						: Integer.valueOf(this.getY()).compareTo(o.getY());
 					
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 
 	
