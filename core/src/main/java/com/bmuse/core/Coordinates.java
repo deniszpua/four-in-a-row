@@ -1,56 +1,56 @@
 package com.bmuse.core;
 
 public class Coordinates implements Comparable<Coordinates> {
-	private final int x, y;
+  private final int xPos;
+  private final int yPos;
 
-	public Coordinates(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+  public Coordinates(int xPos, int yPos) {
+    this.xPos = xPos;
+    this.yPos = yPos;
+  }
 
-	@Override
-	public int hashCode() {
-		return getX()^getY();
-	}
+  @Override
+  public int hashCode() {
+    return getX() ^ getY();
+  }
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		else if (! (other instanceof Coordinates)) {
-			return false;
-		}
-		else {
-			Coordinates otherCoord = (Coordinates) other;
-			return (this.getX() == otherCoord.getX()) && (this.getY() == otherCoord.getY());
-		}
-	}
-	
-	
+  @Override
+  public boolean equals(Object other) {
+    if (other == null) {
+      return false;
+    }
+    else if (! (other instanceof Coordinates)) {
+      return false;
+    }
+    else {
+      Coordinates otherCoord = (Coordinates) other;
+      return (this.getX() == otherCoord.getX()) && (this.getY() == otherCoord.getY());
+    }
+  }
+  
+  
 
-	/**
-	 * Point is meant to be smaller if it has smaller x coordinate,
-	 * or smaller y, if x is the same.
-	 * @param o - Coordinate to compare with
-	 * @return
-	 */
-	@Override
-	public int compareTo(Coordinates o) {
-		return Integer.valueOf(this.getX()).compareTo(o.getX()) != 0 
-				? Integer.valueOf(this.getX()).compareTo(o.getX())
-						: Integer.valueOf(this.getY()).compareTo(o.getY());
-					
-	}
+  /**
+   * Point is meant to be smaller if it has smaller x coordinate,
+   * or smaller y, if x is the same.
+   * @param at - Coordinate to compare with
+   */
+  @Override
+  public int compareTo(Coordinates at) {
+    return Integer.valueOf(this.getX()).compareTo(at.getX()) != 0 
+        ? Integer.valueOf(this.getX()).compareTo(at.getX())
+            : Integer.valueOf(this.getY()).compareTo(at.getY());
+          
+  }
 
-	public int getX() {
-		return x;
-	}
+  public int getX() {
+    return xPos;
+  }
 
-	public int getY() {
-		return y;
-	}
+  public int getY() {
+    return yPos;
+  }
 
-	
+  
 
 }
