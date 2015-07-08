@@ -5,6 +5,7 @@ public class Coordinates implements Comparable<Coordinates> {
   private final int yPos;
 
   public Coordinates(int xPos, int yPos) {
+    assert(xPos >= 0 && yPos >= 0);
     this.xPos = xPos;
     this.yPos = yPos;
   }
@@ -50,6 +51,11 @@ public class Coordinates implements Comparable<Coordinates> {
   public int getY() {
     return yPos;
   }
+
+@Override
+public String toString() {
+	return "{xPos=" + xPos + ", yPos=" + yPos + "}";
+}
 
   
 
