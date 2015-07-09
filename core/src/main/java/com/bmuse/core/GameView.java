@@ -3,11 +3,6 @@ package com.bmuse.core;
 import java.util.List;
 
 public interface GameView {
-  /**
-   * 
-   * Display ball of specified color at given position.
-   */
-  void placeBall(Coordinates at, FourInARow.Ball color);
   
   /**
    * 

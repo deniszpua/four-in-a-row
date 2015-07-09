@@ -1,12 +1,9 @@
 package com.bmuse.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import com.bmuse.view.BoardLayer;
@@ -14,6 +11,8 @@ import com.bmuse.view.BoardLayer;
 import playn.core.Platform;
 import playn.core.Surface;
 import playn.scene.Layer;
+import playn.scene.Mouse;
+import playn.scene.Pointer;
 import playn.scene.SceneGame;
 import pythagoras.f.IDimension;
 
@@ -27,6 +26,7 @@ public class FourInARow extends SceneGame {
   private Ball turn;
   private Map<Coordinates, Ball> board;
   private GameView moveListener;
+  public final Pointer pointer;
 
   /**
    * Game model constructor
@@ -39,6 +39,10 @@ public class FourInARow extends SceneGame {
 
     // Getting window size
     final IDimension viewSize = plat.graphics().viewSize;
+    
+    // Wire up pointer and mouse events
+    pointer = new Pointer(plat, rootLayer, false);
+    plat.input().mouseEvents.connect(new Mouse.Dispatcher(rootLayer, false));
     
     // Fill background with gray
     rootLayer.add(new Layer(){
@@ -56,9 +60,10 @@ public class FourInARow extends SceneGame {
   }
   
   private void startGame() {
+	  moveListener.showLegalMoves(possibleMoves(this), turn);
     //add test ball to test graphics
 //    addBallAt(new Coordinates(0, 0));
-    addBallAt(new Coordinates(0, 5));
+//    addBallAt(new Coordinates(0, 5));
 //    addBallAt(new Coordinates(3, 5));
   
   }
@@ -82,16 +87,13 @@ public class FourInARow extends SceneGame {
     
     board.put(at, turn);
 
-    if (moveListener != null) {
-      moveListener.placeBall(at, turn);
-    }
     if (!isGameOver()){
       switchPlayer();
       moveListener.showLegalMoves(possibleMoves(this), turn);
     }
     else {
       //TODO save score and exit to main menu
-//      System.out.println("Winner is " + turn);
+      System.out.println("Winner is " + turn);
     }
     
   }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.bmuse.core.Coordinates;
 import com.bmuse.core.FourInARow;
@@ -16,6 +15,7 @@ import playn.core.Tile;
 import playn.scene.GroupLayer;
 import playn.scene.ImageLayer;
 import playn.scene.Layer;
+import playn.scene.Pointer;
 import pythagoras.f.IDimension;
 
 public class BoardLayer extends GroupLayer implements GameView {
@@ -29,7 +29,6 @@ public class BoardLayer extends GroupLayer implements GameView {
   private final Map<Coordinates, ImageLayer> ballViews = 
       new HashMap<>(FourInARow.BOARD_HEIGHT * FourInARow.BOARD_WIDTH);
   private final Tile[] ballTiles = new Tile[FourInARow.Ball.values().length];
-  private final List<Coordinates> possibleMoves = new ArrayList<>(FourInARow.BOARD_WIDTH);
   
   /**
    * Constructor
@@ -72,12 +71,12 @@ public class BoardLayer extends GroupLayer implements GameView {
   }
   
 
-  @Override
-  public void placeBall(Coordinates at, FourInARow.Ball ballColor) {
+  private ImageLayer placeBall(Coordinates at, FourInARow.Ball ballColor) {
     ImageLayer ballPic = new ImageLayer(ballTiles[ballColor.ordinal()]);
     ballPic.setOrigin(Layer.Origin.CENTER);
     balls.addAt(ballPic, boardGrid.cellOffset(at.getX()), boardGrid.cellOffset(at.getY()));
     ballViews.put(at, ballPic);
+    return ballPic;
   }
 
 
@@ -93,18 +92,33 @@ public class BoardLayer extends GroupLayer implements GameView {
 
 @Override
 public void showLegalMoves(List<Coordinates> moves, FourInARow.Ball color) {
-	possibleMoves.addAll(moves);
-	for (Coordinates at : moves) {
-		placeBall(at, color);
-	}
 	
-	for (Entry<Coordinates, ImageLayer> entry : ballViews.entrySet()) {
-		if (moves.contains(entry.getKey())) {
-			entry.getValue().setAlpha(0.3f);
+	final List<ImageLayer> possibleMovesPics = new ArrayList<>();
+	for (final Coordinates coord : moves) {
+		final ImageLayer ballPic = placeBall(coord, color);
+		ballPic.setAlpha(0.3f);
+		//add listener (touch/click on possible move picture confirms move)
+		ballPic.events().connect(new Pointer.Listener() {
+
+			@Override
+			public void onStart(Pointer.Interaction iact) {
+				for (ImageLayer image : possibleMovesPics) {
+					if (!image.equals(ballPic)) {
+						image.close();
+					}
+					else {
+						image.setAlpha(1.0f);
+						game.addBallAt(coord);
+					}
+				}
+				
+			}
+			
+			}
+		);
+		possibleMovesPics.add(ballPic);
 		}
 	}
 	
-}
-
-
+	
 }
