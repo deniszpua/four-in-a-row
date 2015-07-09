@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bmuse.core.Ball;
+import com.bmuse.core.BoardModel;
 import com.bmuse.core.Coordinates;
-import com.bmuse.core.FourInARow;
 import com.bmuse.core.GameView;
 
 import playn.core.Canvas;
+import playn.core.Platform;
 import playn.core.Texture;
 import playn.core.Tile;
 import playn.scene.GroupLayer;
@@ -23,18 +25,17 @@ public class BoardLayer extends GroupLayer implements GameView {
   public static final int BLACK_COLOR = 0xFF000000;
   public static final int WHITE_COLOR = 0xFFFFFFFF;
   
-  private final FourInARow game;
+  private final BoardModel game;
   private final GridLayer boardGrid;
   private final GroupLayer balls;
-  private final Map<Coordinates, ImageLayer> ballViews = 
-      new HashMap<>(FourInARow.BOARD_HEIGHT * FourInARow.BOARD_WIDTH);
-  private final Tile[] ballTiles = new Tile[FourInARow.Ball.values().length];
+  private final Map<Coordinates, ImageLayer> ballViews = new HashMap<>();
+  private final Tile[] ballTiles = new Tile[Ball.values().length];
   
   /**
    * Constructor
    * @param game - reference to game model instance
    */
-  public BoardLayer(FourInARow game, IDimension viewSize) {
+  public BoardLayer(BoardModel game, IDimension viewSize, Platform plat) {
     this.game = game;
     boardGrid = new GridLayer(game, viewSize);
     addCenterAt(boardGrid, viewSize.width() / 2, viewSize.height() / 2);
@@ -46,7 +47,7 @@ public class BoardLayer extends GroupLayer implements GameView {
     float size = boardGrid.cellSize - 2;
     float hsize = size / 2;
     
-    Canvas canvas = game.plat.graphics().createCanvas(2 * size, size);
+    Canvas canvas = plat.graphics().createCanvas(2 * size, size);
     
     canvas
     .setFillColor(BLACK_COLOR).fillCircle(hsize, hsize, hsize)
@@ -59,8 +60,8 @@ public class BoardLayer extends GroupLayer implements GameView {
     
     //convert image to texture and extract each region (tile)
     Texture texture = canvas.toTexture(Texture.Config.UNMANAGED);
-    ballTiles[FourInARow.Ball.BLACK.ordinal()] = texture.tile(0, 0, size, size);
-    ballTiles[FourInARow.Ball.WHITE.ordinal()] = texture.tile(size, 0, size, size);
+    ballTiles[Ball.BLACK.ordinal()] = texture.tile(0, 0, size, size);
+    ballTiles[Ball.WHITE.ordinal()] = texture.tile(size, 0, size, size);
     
     // dispose our pieces texture when this layer is disposed
     onDisposed(texture.disposeSlot());
@@ -71,7 +72,7 @@ public class BoardLayer extends GroupLayer implements GameView {
   }
   
 
-  private ImageLayer placeBall(Coordinates at, FourInARow.Ball ballColor) {
+  private ImageLayer placeBall(Coordinates at, Ball ballColor) {
     ImageLayer ballPic = new ImageLayer(ballTiles[ballColor.ordinal()]);
     ballPic.setOrigin(Layer.Origin.CENTER);
     balls.addAt(ballPic, boardGrid.cellOffset(at.getX()), boardGrid.cellOffset(at.getY()));
@@ -91,7 +92,7 @@ public class BoardLayer extends GroupLayer implements GameView {
   }
 
 @Override
-public void showLegalMoves(List<Coordinates> moves, FourInARow.Ball color) {
+public void showLegalMoves(List<Coordinates> moves, Ball color) {
 	
 	final List<ImageLayer> possibleMovesPics = new ArrayList<>();
 	for (final Coordinates coord : moves) {
@@ -108,7 +109,7 @@ public void showLegalMoves(List<Coordinates> moves, FourInARow.Ball color) {
 					}
 					else {
 						image.setAlpha(1.0f);
-						game.addBallAt(coord);
+						game.addBall(coord);
 					}
 				}
 				
