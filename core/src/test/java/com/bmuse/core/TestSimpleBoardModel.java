@@ -1,17 +1,14 @@
 package com.bmuse.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import com.bmuse.interfaces.BoardModel;
-
-import playn.java.LWJGLPlatform;
 
 
 public class TestSimpleBoardModel {

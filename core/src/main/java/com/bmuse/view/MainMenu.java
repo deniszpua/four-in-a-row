@@ -6,13 +6,11 @@ import com.bmuse.resources.Context;
 import playn.core.Canvas;
 import playn.core.Font;
 import playn.core.Platform;
-import playn.core.Surface;
 import playn.core.TextBlock;
 import playn.core.TextFormat;
 import playn.core.TextWrap;
 import playn.scene.GroupLayer;
 import playn.scene.ImageLayer;
-import playn.scene.Layer;
 import pythagoras.f.IDimension;
 
 public class MainMenu extends GroupLayer implements com.bmuse.interfaces.MainMenu {

@@ -38,7 +38,7 @@ public class BoardLayer extends GroupLayer implements GameView {
   private final Map<Coordinates, ImageLayer> ballViews = new HashMap<>();
   private final Tile[] ballTiles = new Tile[Ball.values().length];
   private ImageLayer turnLabel;
-  private Map<Ball, ImageLayer> turnLabelsCache = new HashMap(Ball.values().length);
+  private Map<Ball, ImageLayer> turnLabelsCache = new HashMap<>(Ball.values().length);
   
   /**
    * Constructor
