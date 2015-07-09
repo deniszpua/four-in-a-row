@@ -92,7 +92,7 @@ public class BoardLayer extends GroupLayer implements GameView {
   }
 
 @Override
-public void showLegalMoves(List<Coordinates> moves, Ball color) {
+public void processNextMove(List<Coordinates> moves, Ball color) {
 	
 	final List<ImageLayer> possibleMovesPics = new ArrayList<>();
 	for (final Coordinates coord : moves) {

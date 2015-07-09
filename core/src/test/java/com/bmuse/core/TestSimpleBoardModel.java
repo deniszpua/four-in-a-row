@@ -12,14 +12,9 @@ import org.mockito.Mock;
 import playn.java.LWJGLPlatform;
 
 
-public class TestFourInARow {
-	private static final FourInARow game;
+public class TestSimpleBoardModel {
+	private static final BoardModel game = new SimpleBoardModel(7, 6, 4);
 	
-	static {
-		LWJGLPlatform.Config config = new LWJGLPlatform.Config();
-		LWJGLPlatform plat = new LWJGLPlatform(config);
-		game = new FourInARow(plat);
-	}
 
 	@Test
 	public void TestIsGameOver() {
@@ -78,11 +73,11 @@ public class TestFourInARow {
 		
 	}
 
-	private static void populateBoard(FourInARow game, int[] ballXPos, int[] ballYPos) {
-		game.clearBoard();
+	private static void populateBoard(BoardModel board, int[] ballXPos, int[] ballYPos) {
+		board.clearBoard();
 		for (int i = 0; i < ballXPos.length / 2; i++){
-			game.addBallAt(new Coordinates(ballXPos[i * 2], ballYPos[i * 2]));
-			game.addBallAt(new Coordinates(ballXPos[i * 2 + 1], ballYPos[i * 2 + 1]));
+			board.addBall(new Coordinates(ballXPos[i * 2], ballYPos[i * 2]));
+			board.addBall(new Coordinates(ballXPos[i * 2 + 1], ballYPos[i * 2 + 1]));
 		}
 	}
 	
@@ -92,7 +87,7 @@ public class TestFourInARow {
 		int[] xPos = {0, 1, 2, 4};
 		int[] yPos = {5, 5, 5, 5};
 		populateBoard(game, xPos, yPos);
-		List<Coordinates> got = FourInARow.possibleMoves(game);
+		List<Coordinates> got = game.listLegalMoves();
 		List<Coordinates> expected = Arrays.asList(
 				new Coordinates(0, 4),
 				new Coordinates(1, 4),

@@ -1,7 +1,6 @@
 package com.bmuse.view;
 
 import com.bmuse.core.BoardModel;
-import com.bmuse.core.FourInARow;
 
 import playn.core.Surface;
 import playn.scene.Layer;

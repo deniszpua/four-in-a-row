@@ -1,7 +1,5 @@
 package com.bmuse.core;
 
-import java.util.Map;
-
 import com.bmuse.view.BoardLayer;
 
 import playn.core.Platform;
