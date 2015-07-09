@@ -1,11 +1,14 @@
 package com.bmuse.view;
 
+import com.bmuse.interfaces.MainMenuOptions;
 import com.bmuse.interfaces.MenuListener;
 import com.bmuse.resources.Context;
 
 import playn.core.Canvas;
 import playn.core.Font;
 import playn.core.Platform;
+import playn.scene.Pointer;
+import playn.scene.Pointer.Interaction;
 import playn.core.TextBlock;
 import playn.core.TextFormat;
 import playn.core.TextWrap;
@@ -16,20 +19,15 @@ import pythagoras.f.IDimension;
 public class MainMenu extends GroupLayer implements com.bmuse.interfaces.MainMenu {
 	
 	private static final int WHITE = 0xFFFFFFFF;
-	private MenuListener listener;
+	private final MenuListener listener;
 	private IDimension viewSize;
 	private Platform plat;
 
-	public MainMenu(IDimension viewSize, Platform plat) {
+	public MainMenu(IDimension viewSize, Platform plat, MenuListener listener) {
 		this.viewSize = viewSize;
 		this.plat = plat;
-		init();
-	}
-
-	@Override
-	public void addMenuListener(MenuListener listener) {
 		this.listener = listener;
-
+		init();
 	}
 
 	protected void init() {
@@ -38,11 +36,26 @@ public class MainMenu extends GroupLayer implements com.bmuse.interfaces.MainMen
 		
 		//draw "New Game" button
 		ImageLayer newGameButton = createButton("New Game");
-		//TODO add click listener
+		newGameButton.events().connect(new Pointer.Listener() {
+
+			@Override
+			public void onStart(Interaction iact) {
+				listener.optionChoosed(MainMenuOptions.NEW_GAME);;
+				super.onStart(iact);
+			}
+		});
 		this.addFloorAt(newGameButton, leftMargin, topMarginUpper);
 		
 		ImageLayer bestScoreButton = createButton("Best Time");
-		//TODO add click listener
+		bestScoreButton.events().connect(new Pointer.Listener() {
+
+			@Override
+			public void onStart(Interaction iact) {
+				listener.optionChoosed(MainMenuOptions.BEST_TIME);
+				super.onStart(iact);
+			}
+			
+		});
 		this.addFloorAt(bestScoreButton, leftMargin, topMarginLower);
 
 	}

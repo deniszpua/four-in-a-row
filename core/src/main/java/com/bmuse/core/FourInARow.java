@@ -6,6 +6,8 @@ import static com.bmuse.resources.Context.BOARD_HEIGHT;
 import static com.bmuse.resources.Context.BOARD_WIDTH;
 
 import com.bmuse.interfaces.BoardModel;
+import com.bmuse.interfaces.MainMenuOptions;
+import com.bmuse.interfaces.MenuListener;
 import com.bmuse.view.BoardLayer;
 import com.bmuse.view.MainMenu;
 
@@ -57,7 +59,25 @@ public class FourInARow extends SceneGame {
     rootLayer.add(boardLayer);
     
     // add main menu
-    mainMenuView = new MainMenu(viewSize, plat);
+    mainMenuView = new MainMenu(viewSize, plat,
+    		new MenuListener() {
+				
+				@Override
+				public void optionChoosed(MainMenuOptions choice) {
+					switch(choice) {
+					case NEW_GAME:
+						mainMenuView.setVisible(false);
+						boardLayer.setVisible(true);
+						boardModel.startNewGame();
+						break;
+					case BEST_TIME:
+						System.out.println("Best Time Choosed");
+						break;
+					}
+						
+					
+				}
+			});
     rootLayer.add(mainMenuView);
     
     
