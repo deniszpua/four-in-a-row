@@ -7,6 +7,7 @@ import static com.bmuse.resources.Context.BOARD_WIDTH;
 
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.view.BoardLayer;
+import com.bmuse.view.MainMenu;
 
 import playn.core.Platform;
 import playn.core.Surface;
@@ -20,6 +21,8 @@ public class FourInARow extends SceneGame {
   
   
   private final BoardModel boardModel;
+  private final BoardLayer boardLayer;
+  private final com.bmuse.view.MainMenu mainMenuView;
   
   public final Pointer pointer;
 
@@ -48,12 +51,18 @@ public class FourInARow extends SceneGame {
       }
     });
     
-    // add game board
-    rootLayer.add(new BoardLayer(boardModel, viewSize, plat));
+    // add game board and set it invisible
+    boardLayer = new BoardLayer(boardModel, viewSize, plat);
+    boardLayer.setVisible(false);
+    rootLayer.add(boardLayer);
+    
+    // add main menu
+    mainMenuView = new MainMenu(viewSize, plat);
+    rootLayer.add(mainMenuView);
     
     
     
-    boardModel.startNewGame();
+//    boardModel.startNewGame();
     
   }
   

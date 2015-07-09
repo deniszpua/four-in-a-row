@@ -9,6 +9,7 @@ public class Context {
   public static final int GRID_LINE_COLOR = 0xFFCCCCCC;//light grey
   public static final float LINE_WIDTH = 2.0f;
   public static final float MARGIN = 5.0f;
+  public static final int MENU_BUTTON_COLOR = 0xFF0066FF;//light blue
 
   
 }

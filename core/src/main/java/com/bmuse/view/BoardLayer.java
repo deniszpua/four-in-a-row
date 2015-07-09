@@ -153,7 +153,7 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
 		  turnLabel = new ImageLayer(canvas.toTexture());
 		  turnLabelsCache.put(color, turnLabel);
 		  this.addFloorAt(turnLabel, (viewSize.width() - turnLabel.width())/2, //center horizontally
-				  ((viewSize.height() - boardGrid.height())/2 - turnLabel.height())/2);
+				  ((viewSize.height() - boardGrid.height())/2 - turnLabel.height())/2); //and vertically
 	  }
 	  
   }
