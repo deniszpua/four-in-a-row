@@ -8,6 +8,7 @@ import static com.bmuse.resources.Context.BOARD_WIDTH;
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.interfaces.MainMenuOptions;
 import com.bmuse.interfaces.MenuListener;
+import com.bmuse.model.SimpleBoardModel;
 import com.bmuse.view.BoardLayer;
 import com.bmuse.view.MainMenu;
 

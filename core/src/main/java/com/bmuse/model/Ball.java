@@ -1,3 +1,3 @@
-package com.bmuse.core;
+package com.bmuse.model;
 
 public enum Ball {ORANGE, BLUE}

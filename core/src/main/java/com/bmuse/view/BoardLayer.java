@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bmuse.core.Ball;
-import com.bmuse.core.Coordinates;
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.interfaces.GameView;
+import com.bmuse.model.Ball;
+import com.bmuse.model.Coordinates;
 
 import playn.core.Canvas;
 import playn.core.Font;

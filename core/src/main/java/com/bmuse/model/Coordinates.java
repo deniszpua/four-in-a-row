@@ -1,4 +1,4 @@
-package com.bmuse.core;
+package com.bmuse.model;
 
 public class Coordinates implements Comparable<Coordinates> {
   private final int xPos;

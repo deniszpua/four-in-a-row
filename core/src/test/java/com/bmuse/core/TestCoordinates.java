@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bmuse.model.Coordinates;
+
 public class TestCoordinates {
 	Coordinates origin;
 	Coordinates point2_15;

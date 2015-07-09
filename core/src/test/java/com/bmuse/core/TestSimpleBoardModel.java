@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.bmuse.interfaces.BoardModel;
+import com.bmuse.model.Coordinates;
+import com.bmuse.model.SimpleBoardModel;
 
 
 public class TestSimpleBoardModel {

@@ -2,8 +2,8 @@ package com.bmuse.interfaces;
 
 import java.util.List;
 
-import com.bmuse.core.Ball;
-import com.bmuse.core.Coordinates;
+import com.bmuse.model.Ball;
+import com.bmuse.model.Coordinates;
 
 public interface GameView {
 	

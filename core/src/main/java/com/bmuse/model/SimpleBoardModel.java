@@ -1,4 +1,4 @@
-package com.bmuse.core;
+package com.bmuse.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
