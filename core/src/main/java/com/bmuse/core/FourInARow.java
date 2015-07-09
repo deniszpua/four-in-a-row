@@ -1,5 +1,10 @@
 package com.bmuse.core;
 
+import static com.bmuse.resources.Context.BALLS_TO_WIN;
+import static com.bmuse.resources.Context.BG_COLOR;
+import static com.bmuse.resources.Context.BOARD_HEIGHT;
+import static com.bmuse.resources.Context.BOARD_WIDTH;
+
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.view.BoardLayer;
 
@@ -13,10 +18,6 @@ import pythagoras.f.IDimension;
 
 public class FourInARow extends SceneGame {
   
-  private static final int BG_COLOR = 0xFFFFFFFF;//white
-private static final int BOARD_WIDTH = 7;
-  private static final int BOARD_HEIGHT = 6;
-  private static final int BALLS_TO_WIN = 4;
   
   private final BoardModel boardModel;
   
@@ -25,12 +26,14 @@ private static final int BOARD_WIDTH = 7;
   public FourInARow(Platform plat) {
     // update our "simulation" 33ms (30 times per second)
     super(plat, 33); 
-
+    
     // Getting window size
     final IDimension viewSize = plat.graphics().viewSize;
     
     // instantiate game model
-    boardModel = new SimpleBoardModel(BOARD_WIDTH, BOARD_HEIGHT, BALLS_TO_WIN);
+//    boardModel = new SimpleBoardModel(BOARD_WIDTH, BOARD_HEIGHT, BALLS_TO_WIN);
+    boardModel = new SimpleBoardModel(BOARD_WIDTH,
+    		BOARD_HEIGHT, BALLS_TO_WIN);
     
     // Wire up pointer and mouse events
     pointer = new Pointer(plat, rootLayer, false);

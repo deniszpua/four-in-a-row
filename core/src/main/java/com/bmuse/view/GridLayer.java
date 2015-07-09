@@ -1,5 +1,9 @@
 package com.bmuse.view;
 
+import static com.bmuse.resources.Context.GRID_LINE_COLOR;
+import static com.bmuse.resources.Context.LINE_WIDTH;
+import static com.bmuse.resources.Context.MARGIN;
+
 import com.bmuse.interfaces.BoardModel;
 
 import playn.core.Surface;
@@ -7,9 +11,7 @@ import playn.scene.Layer;
 import pythagoras.f.IDimension;
 
 public class GridLayer extends Layer {
-  private static final int GRID_LINE_COLOR = 0xFFCCCCCC;//light grey
-public static final float LINE_WIDTH = 2;
-  public static final float MARGIN = 5;
+
   
   private final BoardModel game;
 
@@ -52,7 +54,6 @@ public static final float LINE_WIDTH = 2;
 
   @Override
   protected void paintImpl(Surface surf) {
-    //black with full alpha background
     surf.setFillColor(GRID_LINE_COLOR);
     
     float top = 0f, bottom = height(), left = 0f, right = width();
