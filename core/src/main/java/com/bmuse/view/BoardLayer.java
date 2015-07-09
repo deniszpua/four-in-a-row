@@ -1,12 +1,14 @@
 package com.bmuse.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.bmuse.core.Coordinates;
 import com.bmuse.core.FourInARow;
-import com.bmuse.core.FourInARow.Ball;
-import com.bmuse.core.MoveListener;
+import com.bmuse.core.GameView;
 
 import playn.core.Canvas;
 import playn.core.Texture;
@@ -16,32 +18,33 @@ import playn.scene.ImageLayer;
 import playn.scene.Layer;
 import pythagoras.f.IDimension;
 
-public class GameView extends GroupLayer implements MoveListener {
+public class BoardLayer extends GroupLayer implements GameView {
   public static final int STROKE_WIDTH = 2;
   public static final int BLACK_COLOR = 0xFF000000;
   public static final int WHITE_COLOR = 0xFFFFFFFF;
   
   private final FourInARow game;
-  private final BoardView boardView;
+  private final GridLayer boardGrid;
   private final GroupLayer balls;
   private final Map<Coordinates, ImageLayer> ballViews = 
       new HashMap<>(FourInARow.BOARD_HEIGHT * FourInARow.BOARD_WIDTH);
   private final Tile[] ballTiles = new Tile[FourInARow.Ball.values().length];
+  private final List<Coordinates> possibleMoves = new ArrayList<>(FourInARow.BOARD_WIDTH);
   
   /**
    * Constructor
    * @param game - reference to game model instance
    */
-  public GameView(FourInARow game, IDimension viewSize) {
+  public BoardLayer(FourInARow game, IDimension viewSize) {
     this.game = game;
-    boardView = new BoardView(game, viewSize);
-    addCenterAt(boardView, viewSize.width() / 2, viewSize.height() / 2);
+    boardGrid = new GridLayer(game, viewSize);
+    addCenterAt(boardGrid, viewSize.width() / 2, viewSize.height() / 2);
 
     balls = new GroupLayer();
-    addAt(balls, boardView.tx(), boardView.ty());
+    addAt(balls, boardGrid.tx(), boardGrid.ty());
     
     //create two balls images from canvas
-    float size = boardView.cellSize - 2;
+    float size = boardGrid.cellSize - 2;
     float hsize = size / 2;
     
     Canvas canvas = game.plat.graphics().createCanvas(2 * size, size);
@@ -68,26 +71,19 @@ public class GameView extends GroupLayer implements MoveListener {
 
   }
   
-  /**
-   * Put ball of specified color in specified cell
-   */
-  public void putBallAt(Coordinates at, FourInARow.Ball ballColor) {
-    ImageLayer ballView = new ImageLayer(ballTiles[ballColor.ordinal()]);
-    ballView.setOrigin(Layer.Origin.CENTER);
-    balls.addAt(ballView, boardView.cellOffset(at.getX()), boardView.cellOffset(at.getY()));
-    ballViews.put(at, ballView);
-  }
 
   @Override
-  public void ballAddedAt(Coordinates at, Ball color) {
-    putBallAt(at, color);
-    
-    
+  public void placeBall(Coordinates at, FourInARow.Ball ballColor) {
+    ImageLayer ballPic = new ImageLayer(ballTiles[ballColor.ordinal()]);
+    ballPic.setOrigin(Layer.Origin.CENTER);
+    balls.addAt(ballPic, boardGrid.cellOffset(at.getX()), boardGrid.cellOffset(at.getY()));
+    ballViews.put(at, ballPic);
   }
+
+
   
-  /**
-   * Remove ball at given position.
-   */
+
+  @Override
   public void removeBall(Coordinates at) {
     ImageLayer ball = ballViews.remove(at);
     if (ball != null) {
@@ -95,12 +91,20 @@ public class GameView extends GroupLayer implements MoveListener {
     }
   }
 
-  @Override
-  public void ballRemoved(Coordinates at) {
-    removeBall(at);
-    
-  }
-  
-  
+@Override
+public void showLegalMoves(List<Coordinates> moves, FourInARow.Ball color) {
+	possibleMoves.addAll(moves);
+	for (Coordinates at : moves) {
+		placeBall(at, color);
+	}
+	
+	for (Entry<Coordinates, ImageLayer> entry : ballViews.entrySet()) {
+		if (moves.contains(entry.getKey())) {
+			entry.getValue().setAlpha(0.3f);
+		}
+	}
+	
+}
+
 
 }

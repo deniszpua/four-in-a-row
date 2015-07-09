@@ -6,7 +6,7 @@ import playn.core.Surface;
 import playn.scene.Layer;
 import pythagoras.f.IDimension;
 
-public class BoardView extends Layer {
+public class GridLayer extends Layer {
   public static final float LINE_WIDTH = 2;
   public static final float MARGIN = 5;
   
@@ -19,7 +19,7 @@ public class BoardView extends Layer {
    * @param game - game model object;
    * @param viewSize - size of view;
    */
-  public BoardView(FourInARow game, IDimension viewSize) {
+  public GridLayer(FourInARow game, IDimension viewSize) {
     this.game = game;
     //compute cell size to fit in screen
     cellSize = Math.min((viewSize.height() - 2 * MARGIN) / FourInARow.BOARD_HEIGHT, 

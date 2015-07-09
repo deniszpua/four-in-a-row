@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.bmuse.view.GameView;
+import com.bmuse.view.BoardLayer;
 
 import playn.core.Platform;
 import playn.core.Surface;
@@ -26,7 +26,7 @@ public class FourInARow extends SceneGame {
   
   private Ball turn;
   private Map<Coordinates, Ball> board;
-  private MoveListener moveListener;
+  private GameView moveListener;
 
   /**
    * Game model constructor
@@ -50,7 +50,7 @@ public class FourInARow extends SceneGame {
     });
     
     // add game board
-    rootLayer.add(new GameView(this, viewSize));
+    rootLayer.add(new BoardLayer(this, viewSize));
     
     startGame();
   }
@@ -58,8 +58,8 @@ public class FourInARow extends SceneGame {
   private void startGame() {
     //add test ball to test graphics
 //    addBallAt(new Coordinates(0, 0));
-//    switchPlayer();
-//    addBallAt(new Coordinates(3, 4));
+    addBallAt(new Coordinates(0, 5));
+//    addBallAt(new Coordinates(3, 5));
   
   }
   
@@ -83,10 +83,11 @@ public class FourInARow extends SceneGame {
     board.put(at, turn);
 
     if (moveListener != null) {
-      moveListener.ballAddedAt(at, turn);
+      moveListener.placeBall(at, turn);
     }
     if (!isGameOver()){
       switchPlayer();
+      moveListener.showLegalMoves(possibleMoves(this), turn);
     }
     else {
       //TODO save score and exit to main menu
@@ -101,14 +102,14 @@ public class FourInARow extends SceneGame {
    */
   public void clearBoard() {
     for (Coordinates at : board.keySet()) {
-      moveListener.ballRemoved(at);;
+      moveListener.removeBall(at);;
     }
     board.clear();
     turn = Ball.WHITE;
     
   }
 
-  public void addMoveListener(MoveListener moveListener) {
+  public void addMoveListener(GameView moveListener) {
     this.moveListener = moveListener;
   }
   
