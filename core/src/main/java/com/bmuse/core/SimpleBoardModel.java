@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import com.bmuse.interfaces.BoardModel;
+import com.bmuse.interfaces.GameView;
+
 public class SimpleBoardModel implements BoardModel {
   private final int boardWidth;
   private final int boardHeight;
@@ -26,7 +29,7 @@ public class SimpleBoardModel implements BoardModel {
     this.ballsToWin = ballsToWin;
     board = new HashMap<>(boardHeight * boardWidth);
     //white always moves first
-    turn = Ball.WHITE;
+    turn = Ball.ORANGE;
   }
 
   @Override
@@ -206,7 +209,7 @@ public class SimpleBoardModel implements BoardModel {
       }
     }
     board.clear();
-    turn = Ball.WHITE;
+    turn = Ball.ORANGE;
   
   }
   

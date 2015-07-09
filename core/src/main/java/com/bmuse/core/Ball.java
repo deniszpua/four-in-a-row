@@ -1,3 +1,3 @@
 package com.bmuse.core;
 
-public enum Ball {WHITE, BLACK}
+public enum Ball {ORANGE, BLUE}

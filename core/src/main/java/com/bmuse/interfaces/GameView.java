@@ -1,8 +1,13 @@
-package com.bmuse.core;
+package com.bmuse.interfaces;
 
 import java.util.List;
+import java.util.Map;
+
+import com.bmuse.core.Ball;
+import com.bmuse.core.Coordinates;
 
 public interface GameView {
+	
   
   /**
    * 
