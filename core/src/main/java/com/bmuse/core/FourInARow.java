@@ -9,6 +9,7 @@ import com.bmuse.interfaces.BoardModel;
 import com.bmuse.interfaces.MainMenuOptions;
 import com.bmuse.interfaces.MenuListener;
 import com.bmuse.model.SimpleBoardModel;
+import com.bmuse.view.BestTime;
 import com.bmuse.view.BoardLayer;
 import com.bmuse.view.MainMenu;
 
@@ -26,6 +27,7 @@ public class FourInARow extends SceneGame {
   private final BoardModel boardModel;
   private final BoardLayer boardLayer;
   private final com.bmuse.view.MainMenu mainMenuView;
+  private final BestTime bestTimeView;
   
   public final Pointer pointer;
 
@@ -37,9 +39,7 @@ public class FourInARow extends SceneGame {
     final IDimension viewSize = plat.graphics().viewSize;
     
     // instantiate game model
-//    boardModel = new SimpleBoardModel(BOARD_WIDTH, BOARD_HEIGHT, BALLS_TO_WIN);
-    boardModel = new SimpleBoardModel(BOARD_WIDTH,
-    		BOARD_HEIGHT, BALLS_TO_WIN);
+    boardModel = new SimpleBoardModel(BOARD_WIDTH, BOARD_HEIGHT, BALLS_TO_WIN);
     
     // Wire up pointer and mouse events
     pointer = new Pointer(plat, rootLayer, false);
@@ -59,21 +59,25 @@ public class FourInARow extends SceneGame {
     boardLayer.setVisible(false);
     rootLayer.add(boardLayer);
     
+    // add best time layer
+    bestTimeView = new BestTime(plat, viewSize);
+    bestTimeView.setVisible(false);
+    rootLayer.add(bestTimeView);
+    
     // add main menu
     mainMenuView = new MainMenu(viewSize, plat,
     		new MenuListener() {
 				
 				@Override
 				public void optionChoosed(MainMenuOptions choice) {
+					mainMenuView.setVisible(false);
 					switch(choice) {
 					case NEW_GAME:
-						mainMenuView.setVisible(false);
 						boardLayer.setVisible(true);
 						boardModel.startNewGame();
 						break;
 					case BEST_TIME:
-						System.out.println("Best Time Choosed");
-						break;
+						bestTimeView.setVisible(true);
 					}
 						
 					
@@ -83,7 +87,6 @@ public class FourInARow extends SceneGame {
     
     
     
-//    boardModel.startNewGame();
     
   }
   
