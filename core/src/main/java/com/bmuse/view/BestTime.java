@@ -14,7 +14,8 @@ import playn.scene.Layer;
 import pythagoras.f.IDimension;
 
 public class BestTime extends Layer implements BestTimeView {
-	private String bestTime = "-:--";
+	private String record = "-:--";
+	private long bestTime = Long.MAX_VALUE;
 	private Platform plat;
 	private IDimension viewSize;
 
@@ -25,15 +26,21 @@ public class BestTime extends Layer implements BestTimeView {
 	}
 
 	@Override
-	public void updateBestTime(String newRecord) {
-		bestTime = newRecord;
+	public void updateBestTime(long timeElapsed) {
+		if (bestTime > timeElapsed) {
+			bestTime = timeElapsed;
+			int min = (int) (timeElapsed / (60 * 1000));
+			int sec = (int) (timeElapsed / 1000 - 60 * min);
+			record = String.format("%d:%02d", min, sec);
+			
+		}
 		
 
 	}
 
 	@Override
 	protected void paintImpl(Surface surf) {
-		TextBlock text = new TextBlock(plat.graphics().layoutText(bestTime, 
+		TextBlock text = new TextBlock(plat.graphics().layoutText(record, 
 				new TextFormat(new Font("Sans", 30)),
 				new TextWrap(0.8f * viewSize.width())));
 		Canvas canvas = plat.graphics().createCanvas(viewSize);

@@ -14,7 +14,7 @@ import com.bmuse.model.SimpleBoardModel;
 
 
 public class TestSimpleBoardModel {
-	private static final BoardModel game = new SimpleBoardModel(7, 6, 4);
+	private static final BoardModel game = new SimpleBoardModel(null);
 	
 
 	@Test

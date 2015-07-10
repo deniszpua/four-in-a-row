@@ -6,6 +6,7 @@ import static com.bmuse.resources.Context.BOARD_HEIGHT;
 import static com.bmuse.resources.Context.BOARD_WIDTH;
 
 import com.bmuse.interfaces.BoardModel;
+import com.bmuse.interfaces.GameExitHandler;
 import com.bmuse.interfaces.MainMenuOptions;
 import com.bmuse.interfaces.MenuListener;
 import com.bmuse.model.SimpleBoardModel;
@@ -23,7 +24,6 @@ import pythagoras.f.IDimension;
 
 public class FourInARow extends SceneGame {
   
-  
   private final BoardModel boardModel;
   private final BoardLayer boardLayer;
   private final com.bmuse.view.MainMenu mainMenuView;
@@ -39,7 +39,30 @@ public class FourInARow extends SceneGame {
     final IDimension viewSize = plat.graphics().viewSize;
     
     // instantiate game model
-    boardModel = new SimpleBoardModel(BOARD_WIDTH, BOARD_HEIGHT, BALLS_TO_WIN);
+    
+    boardModel = new SimpleBoardModel(new GameExitHandler() {
+		
+		@Override
+		public void onMenuPressed() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onGameFinished(long timeElapsed) {
+			bestTimeView.updateBestTime(timeElapsed);
+			boardLayer.setVisible(false);
+			boardModel.clearBoard();
+			bestTimeView.setVisible(true);
+			
+		}
+		
+		@Override
+		public void onBestTimePressed() {
+			// TODO Auto-generated method stub
+			
+		}
+	});
     
     // Wire up pointer and mouse events
     pointer = new Pointer(plat, rootLayer, false);
@@ -84,9 +107,6 @@ public class FourInARow extends SceneGame {
 				}
 			});
     rootLayer.add(mainMenuView);
-    
-    
-    
     
   }
   

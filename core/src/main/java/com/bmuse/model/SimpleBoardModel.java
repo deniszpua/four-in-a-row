@@ -7,15 +7,21 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import com.bmuse.interfaces.BoardModel;
+import com.bmuse.interfaces.GameExitHandler;
 import com.bmuse.interfaces.GameView;
+import com.bmuse.resources.Context;
 
 public class SimpleBoardModel implements BoardModel {
+  private static final Ball MOVES_FIRST = Ball.ORANGE;
   private final int boardWidth;
   private final int boardHeight;
   private final int ballsToWin;
   private GameView view;
   private final Map<Coordinates, Ball> board;
   private Ball turn;
+  private GameExitHandler handler;
+  private long timer;
+  
 
   /**
    * Constructor.
@@ -23,13 +29,13 @@ public class SimpleBoardModel implements BoardModel {
    * @param boardHeight - number of cells in each game board column.
    * @param ballsToWin - minimum number of balls in line or diagonal to finish game
    */
-  public SimpleBoardModel(int boardWidth, int boardHeight, int ballsToWin) {
-    this.boardWidth = boardWidth;
-    this.boardHeight = boardHeight;
-    this.ballsToWin = ballsToWin;
+  public SimpleBoardModel(GameExitHandler handler) {
+    this.boardWidth = Context.BOARD_WIDTH;
+    this.boardHeight = Context.BOARD_HEIGHT;
+    this.ballsToWin = Context.BALLS_TO_WIN;
+    this.handler = handler;
     board = new HashMap<>(boardHeight * boardWidth);
-    //white always moves first
-    turn = Ball.ORANGE;
+    turn = MOVES_FIRST;
   }
 
   @Override
@@ -46,8 +52,12 @@ public class SimpleBoardModel implements BoardModel {
         view.processNextMove(listLegalMoves(), turn);
       }
     } else {
-      //TODO save score and exit to main menu
-      System.out.println("Winner is " + turn);
+      long timeElapsed = System.currentTimeMillis() - timer;
+
+      if (handler != null) {
+    	  handler.onGameFinished(timeElapsed);
+      }
+      
     }
       
       
@@ -73,6 +83,7 @@ public class SimpleBoardModel implements BoardModel {
   @Override
   public void startNewGame() {
     view.processNextMove(listLegalMoves(), turn);
+    timer = System.currentTimeMillis();
     
   }
 
@@ -209,7 +220,7 @@ public class SimpleBoardModel implements BoardModel {
       }
     }
     board.clear();
-    turn = Ball.ORANGE;
+    turn = MOVES_FIRST;
   
   }
   
