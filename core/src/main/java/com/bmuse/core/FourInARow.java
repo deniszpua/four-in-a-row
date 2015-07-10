@@ -40,26 +40,7 @@ public class FourInARow extends SceneGame {
     
     // instantiate game model
     
-    boardModel = new SimpleBoardModel(new GameExitHandler() {
-		
-		@Override
-		public void onMenuPressed() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onGameFinished(long timeElapsed) {
-			bestTimeView.updateBestTime(timeElapsed);
-			
-		}
-		
-		@Override
-		public void onBestTimePressed() {
-			// TODO Auto-generated method stub
-			
-		}
-	});
+    boardModel = createSimpleBoard();
     
     // Wire up pointer and mouse events
     pointer = new Pointer(plat, rootLayer, false);
@@ -106,6 +87,32 @@ public class FourInARow extends SceneGame {
     rootLayer.add(mainMenuView);
     
   }
+
+private SimpleBoardModel createSimpleBoard() {
+	return new SimpleBoardModel(new GameExitHandler() {
+		
+		@Override
+		public void onMenuPressed() {
+			mainMenuView.setVisible(true);
+			boardLayer.setVisible(false);
+			boardModel.clearBoard();
+			
+		}
+		
+		@Override
+		public void onGameFinished(long timeElapsed) {
+			bestTimeView.updateBestTime(timeElapsed);
+			
+		}
+		
+		@Override
+		public void onBestTimePressed() {
+			bestTimeView.setVisible(true);
+			boardLayer.setVisible(false);
+			
+		}
+	});
+}
   
   
 }

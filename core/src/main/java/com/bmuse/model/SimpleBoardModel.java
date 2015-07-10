@@ -225,6 +225,7 @@ public class SimpleBoardModel implements BoardModel {
     }
     board.clear();
     turn = MOVES_FIRST;
+    timeElapsed = -1;
   
   }
   
