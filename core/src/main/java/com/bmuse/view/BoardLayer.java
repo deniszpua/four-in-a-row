@@ -15,6 +15,7 @@ import com.bmuse.resources.Context;
 import playn.core.Canvas;
 import playn.core.Font;
 import playn.core.Platform;
+import playn.core.Surface;
 import playn.core.TextBlock;
 import playn.core.TextFormat;
 import playn.core.TextWrap;
@@ -81,9 +82,12 @@ public class BoardLayer extends GroupLayer implements GameView {
     ImageLayer menuButton = createButton("Menu", GameboardMenu.MENU);
     this.addFloorAt(menuButton, leftMargin, topMargin);
     
-    ImageLayer bestTimeButton = createButton("Menu", GameboardMenu.MENU);
+    ImageLayer bestTimeButton = createButton("Best Time", GameboardMenu.BEST_TIME);
     leftMargin = viewSize.width() * 15 / 16 - bestTimeButton.width(); 
     this.addFloorAt(bestTimeButton, leftMargin, topMargin);
+    
+    //create timer
+    this.add(createTimer());
     
     
     // dispose our pieces texture when this layer is disposed
@@ -94,7 +98,33 @@ public class BoardLayer extends GroupLayer implements GameView {
 
   }
   
-  private ImageLayer createButton(String buttonText, final GameboardMenu option) {
+  private Layer createTimer() {
+	
+	return new Layer() {
+
+		@Override
+		protected void paintImpl(Surface surf) {
+			int timeElapsed = game.getElapsedTime();
+			int min = timeElapsed / ( 60 * 1000);
+			int sec = timeElapsed / 1000 - min * 60;
+			String timeString = String.format("%d:%02d", min, sec);
+			TextBlock time = new TextBlock(plat.graphics().layoutText(timeString,
+					new TextFormat(new Font("Sans", 22)), 
+					new TextWrap(viewSize.width() / 2)));
+			Canvas canvas = plat.graphics()
+					.createCanvas(time.bounds.width() * 1.2f, time.bounds.height() * 1.2f);
+			canvas.setFillColor(LABEL_TEXT_COLOR);
+			time.fill(canvas, TextBlock.Align.CENTER, 0, 0);
+			Texture timeTile = canvas.toTexture();
+			surf.drawCentered(timeTile, 
+					viewSize.width() / 2, viewSize.height() - (viewSize.height() - boardGrid.height()) / 4);
+			
+		}
+		
+	};
+}
+
+private ImageLayer createButton(String buttonText, final GameboardMenu option) {
     //buttons of equal height and width 
     float width = viewSize.width() / 4, height = (viewSize.height() - boardGrid.height()) / 8;
 		

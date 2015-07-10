@@ -22,6 +22,7 @@ public class SimpleBoardModel implements BoardModel {
   private Ball turn;
   private GameExitHandler handler;
   private long timer;
+  private int timeElapsed = -1;
   
 
   /**
@@ -54,6 +55,7 @@ public class SimpleBoardModel implements BoardModel {
       }
     } else {
       long timeElapsed = System.currentTimeMillis() - timer;
+      this.timeElapsed = (int) timeElapsed;
 
       if (handler != null) {
     	  handler.onGameFinished(timeElapsed);
@@ -242,6 +244,13 @@ public class SimpleBoardModel implements BoardModel {
 			break;
 		}
 		
+	}
+
+	@Override
+	public int getElapsedTime() {
+		
+		return (timeElapsed == -1) ? (int) (System.currentTimeMillis() - timer)
+				: timeElapsed;
 	}
   
   

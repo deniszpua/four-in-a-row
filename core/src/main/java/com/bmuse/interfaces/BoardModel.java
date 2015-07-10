@@ -40,4 +40,6 @@ public interface BoardModel {
   
   public void menuItemSelected(GameboardMenu option);
   
+  public int getElapsedTime();
+  
 }
