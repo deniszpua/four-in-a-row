@@ -121,7 +121,7 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
           else {
             image.setAlpha(1.0f);
             game.addBall(coord);
-//            ballPic.events().clearConnections();
+            ballPic.events().disconnect(this);
           }
         }
         
@@ -165,9 +165,13 @@ public void showNewGameInvitation(String winner) {
 
 		@Override
 		public void onStart(Interaction iact) {
+			turnLabel.events().disconnect(this);
+			for (ImageLayer ballView : ballViews.values()) {
+				ballView.close();
+			}
+			ballViews.clear();
 			game.clearBoard();
 			game.startNewGame();
-			turnLabel.events().clearConnections();
 		}
 		
 	});
