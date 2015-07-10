@@ -7,8 +7,10 @@ import java.util.Map;
 
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.interfaces.GameView;
+import com.bmuse.interfaces.GameboardMenu;
 import com.bmuse.model.Ball;
 import com.bmuse.model.Coordinates;
+import com.bmuse.resources.Context;
 
 import playn.core.Canvas;
 import playn.core.Font;
@@ -45,7 +47,7 @@ public class BoardLayer extends GroupLayer implements GameView {
    * Constructor
    * @param game - reference to game model instance
    */
-  public BoardLayer(BoardModel game, IDimension viewSize, Platform plat) {
+  public BoardLayer(final BoardModel game, IDimension viewSize, Platform plat) {
     this.game = game;
     this.viewSize = viewSize;
     this.plat = plat;
@@ -72,6 +74,17 @@ public class BoardLayer extends GroupLayer implements GameView {
     ballTiles[Ball.BLUE.ordinal()] = texture.tile(0, 0, size, size);
     ballTiles[Ball.ORANGE.ordinal()] = texture.tile(size, 0, size, size);
     
+    //create control buttons
+    float topMargin = (viewSize.height() - boardGrid.height()) / 16;
+    float leftMargin = (viewSize.width() / 16);
+    
+    ImageLayer menuButton = createButton("Menu", GameboardMenu.MENU);
+    this.addFloorAt(menuButton, leftMargin, topMargin);
+    
+    ImageLayer bestTimeButton = createButton("Menu", GameboardMenu.MENU);
+    leftMargin = viewSize.width() * 15 / 16 - bestTimeButton.width(); 
+    this.addFloorAt(bestTimeButton, leftMargin, topMargin);
+    
     
     // dispose our pieces texture when this layer is disposed
     onDisposed(texture.disposeSlot());
@@ -81,7 +94,33 @@ public class BoardLayer extends GroupLayer implements GameView {
 
   }
   
+  private ImageLayer createButton(String buttonText, final GameboardMenu option) {
+    //buttons of equal height and width 
+    float width = viewSize.width() / 4, height = (viewSize.height() - boardGrid.height()) / 8;
+		
+	Canvas canvas = plat.graphics().createCanvas(width, height);
+	canvas.setFillColor(Context.BUTTONS_BG_COLOR);
+	canvas.fillRect(0, 0, width, height);
+	
+	TextBlock textLabel = new TextBlock(plat.graphics().layoutText(buttonText,
+			new TextFormat(new Font("Sans", 18)), new TextWrap(width * 0.8f)));
+	canvas.setFillColor(Context.BUTTONS_TEXT_COLOR);
+	textLabel.fill(canvas, TextBlock.Align.CENTER, 
+			(width - textLabel.bounds.width()) / 2,
+			(height - textLabel.bounds.height()) / 2);
+	ImageLayer buttonImage = new ImageLayer(canvas.toTexture());
+	buttonImage.events().connect(new Pointer.Listener() {
 
+		@Override
+		public void onStart(Interaction iact) {
+			game.menuItemSelected(option);
+		}
+		
+	});
+	
+	return buttonImage;
+  }
+  
   private ImageLayer placeBall(Coordinates at, Ball ballColor) {
     ImageLayer ballPic = new ImageLayer(ballTiles[ballColor.ordinal()]);
     ballPic.setOrigin(Layer.Origin.CENTER);
@@ -98,8 +137,8 @@ public class BoardLayer extends GroupLayer implements GameView {
     }
   }
 
-@Override
-public void processNextMove(List<Coordinates> moves, Ball color) {
+  @Override
+  public void processNextMove(List<Coordinates> moves, Ball color) {
   // Create textLabel with current player color;
   changeTurnLabel(color.toString() + " moves");
 	
@@ -152,14 +191,14 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
 		  turnLabel = new ImageLayer(canvas.toTexture());
 		  turnLabelsCache.put(message, turnLabel);
 		  this.addFloorAt(turnLabel, (viewSize.width() - turnLabel.width())/2, //center horizontally
-				  ((viewSize.height() - boardGrid.height())/2 - turnLabel.height())/2); //and vertically
+				  ((viewSize.height() - boardGrid.height()) / 4)); //and vertically
 	  }
 	  
   }
 
 
-@Override
-public void showNewGameInvitation(String winner) {
+  @Override
+  public void showNewGameInvitation(String winner) {
 	changeTurnLabel(winner + " wins! Press to play again");
 	turnLabel.events().connect(new Pointer.Listener() {
 
@@ -176,7 +215,7 @@ public void showNewGameInvitation(String winner) {
 		
 	});
 	
-}
+  }
   
   
   

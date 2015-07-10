@@ -38,4 +38,6 @@ public interface BoardModel {
    */
   public List<Coordinates> listLegalMoves();
   
+  public void menuItemSelected(GameboardMenu option);
+  
 }

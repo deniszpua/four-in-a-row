@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import com.bmuse.interfaces.BoardModel;
 import com.bmuse.interfaces.GameExitHandler;
 import com.bmuse.interfaces.GameView;
+import com.bmuse.interfaces.GameboardMenu;
 import com.bmuse.resources.Context;
 
 public class SimpleBoardModel implements BoardModel {
@@ -229,4 +230,19 @@ public class SimpleBoardModel implements BoardModel {
 	  turn = Ball.values()[(turn.ordinal() + 1) % Ball.values().length];
 	  
   }
+
+	@Override
+	public void menuItemSelected(GameboardMenu option) {
+		switch (option) {
+		case MENU: 
+			handler.onMenuPressed();
+			break;
+		case BEST_TIME:
+			handler.onBestTimePressed();
+			break;
+		}
+		
+	}
+  
+  
 }
