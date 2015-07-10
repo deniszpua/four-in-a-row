@@ -23,4 +23,5 @@ public interface GameView {
    */
   void processNextMove(List<Coordinates>  moves, Ball color);
 
+  void showNewGameInvitation(String winner);
 }

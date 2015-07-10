@@ -51,9 +51,6 @@ public class FourInARow extends SceneGame {
 		@Override
 		public void onGameFinished(long timeElapsed) {
 			bestTimeView.updateBestTime(timeElapsed);
-			boardLayer.setVisible(false);
-			boardModel.clearBoard();
-			bestTimeView.setVisible(true);
 			
 		}
 		

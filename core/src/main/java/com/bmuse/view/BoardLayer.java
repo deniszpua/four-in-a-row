@@ -22,6 +22,7 @@ import playn.scene.GroupLayer;
 import playn.scene.ImageLayer;
 import playn.scene.Layer;
 import playn.scene.Pointer;
+import playn.scene.Pointer.Interaction;
 import pythagoras.f.IDimension;
 
 public class BoardLayer extends GroupLayer implements GameView {
@@ -38,7 +39,7 @@ public class BoardLayer extends GroupLayer implements GameView {
   private final Map<Coordinates, ImageLayer> ballViews = new HashMap<>();
   private final Tile[] ballTiles = new Tile[Ball.values().length];
   private ImageLayer turnLabel;
-  private Map<Ball, ImageLayer> turnLabelsCache = new HashMap<>(Ball.values().length);
+  private Map<String, ImageLayer> turnLabelsCache = new HashMap<>(Ball.values().length + 1);
   
   /**
    * Constructor
@@ -89,9 +90,6 @@ public class BoardLayer extends GroupLayer implements GameView {
     return ballPic;
   }
 
-
-  
-
   @Override
   public void removeBall(Coordinates at) {
     ImageLayer ball = ballViews.remove(at);
@@ -103,7 +101,7 @@ public class BoardLayer extends GroupLayer implements GameView {
 @Override
 public void processNextMove(List<Coordinates> moves, Ball color) {
   // Create textLabel with current player color;
-  changeTurnLabel(color);
+  changeTurnLabel(color.toString() + " moves");
 	
 	
   // Show possible move positions
@@ -123,6 +121,7 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
           else {
             image.setAlpha(1.0f);
             game.addBall(coord);
+//            ballPic.events().clearConnections();
           }
         }
         
@@ -134,16 +133,16 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
     }
   }
 
-  private void changeTurnLabel(Ball color) {
+  private void changeTurnLabel(String message) {
 	  if (turnLabel != null) {
 		  turnLabel.setVisible(false);
 	  }
-	  if (turnLabelsCache.containsKey(color)) {
-		  turnLabel = turnLabelsCache.get(color);
+	  if (turnLabelsCache.containsKey(message)) {
+		  turnLabel = turnLabelsCache.get(message);
 		  turnLabel.setVisible(true);
 		  
 	  } else {
-		  TextBlock label = new TextBlock(plat.graphics().layoutText(color.toString(),
+		  TextBlock label = new TextBlock(plat.graphics().layoutText(message,
 				  new TextFormat(new Font("Sans", 18)),
 				  new TextWrap(viewSize.width()/2)));
 		  Canvas canvas = plat.graphics().createCanvas(label.bounds.width() + 2 * STROKE_WIDTH,
@@ -151,12 +150,29 @@ public void processNextMove(List<Coordinates> moves, Ball color) {
 		  canvas.setFillColor(LABEL_TEXT_COLOR);
 		  label.fill(canvas, TextBlock.Align.CENTER, 0, 0);
 		  turnLabel = new ImageLayer(canvas.toTexture());
-		  turnLabelsCache.put(color, turnLabel);
+		  turnLabelsCache.put(message, turnLabel);
 		  this.addFloorAt(turnLabel, (viewSize.width() - turnLabel.width())/2, //center horizontally
 				  ((viewSize.height() - boardGrid.height())/2 - turnLabel.height())/2); //and vertically
 	  }
 	  
   }
+
+
+@Override
+public void showNewGameInvitation(String winner) {
+	changeTurnLabel(winner + " wins! Press to play again");
+	turnLabel.events().connect(new Pointer.Listener() {
+
+		@Override
+		public void onStart(Interaction iact) {
+			game.clearBoard();
+			game.startNewGame();
+			turnLabel.events().clearConnections();
+		}
+		
+	});
+	
+}
   
   
   

@@ -56,6 +56,7 @@ public class SimpleBoardModel implements BoardModel {
 
       if (handler != null) {
     	  handler.onGameFinished(timeElapsed);
+    	  view.showNewGameInvitation(turn.toString());
       }
       
     }
